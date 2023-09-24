@@ -45,6 +45,7 @@
         android:id="@+id/rvSearchUsers"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:scrollbarSize="0dp"

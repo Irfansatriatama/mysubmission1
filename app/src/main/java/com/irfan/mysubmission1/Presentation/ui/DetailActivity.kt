@@ -1,12 +1,107 @@
 package com.irfan.mysubmission1.Presentation.ui
 
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
+import androidx.activity.viewModels
+import androidx.annotation.StringRes
+import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
+import com.irfan.mysubmission1.data.response.DetailUserResponse
+import com.irfan.mysubmission1.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityDetailBinding
+    private val followViewModel by viewModels<FollowViewModel>()
+
+    companion object {
+
+        private val TAB_TILES = intArrayOf(
+
+        )
+
+        const val KEY_TAG ="USERNAME"
+        private var _username = ""
+        fun getUsername() = _username
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        _username = if (Build.VERSION.SDK_INT >= 33) {
+            intent.getStringExtra(KEY_TAG).toString()
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getStringExtra(KEY_TAG).toString()
+        }
+
+        setSupportActionBar(binding.toolbarDetail)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+        }
+
+
+        if (_username != "") {
+            // Load My Data Followers
+            if (followViewModel.detailFollow.value == null) {
+                followViewModel.getDetailFollow(_username)
+            }
+            followViewModel.isLoading.observe(this) { loader ->
+                showLoadingProcess(loader)
+            }
+
+            followViewModel.detailFollower.observe(this) { follower ->
+                if (follower != null) {
+                    loadDetailDataFollower(follower)
+                }
+            }
+        }
+
+
+        val sectionsPagerAdapter = SectionAdapter(this)
+        sectionsPagerAdapter.appName = resources.getString(R.string.app_name)
+        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+        viewPager.adapter = sectionsPagerAdapter
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        TabLayoutMediator(tabs, viewPager) { tab, position ->
+            tab.apply {
+                text = getString(TAB_TITLES[position])
+            }
+        }.attach()
+        supportActionBar?.elevation = 0f
+    }
+
+    private fun showLoadingProcess(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun loadDetailDataFollower(follower: DetailUserResponse) {
+        Glide.with(this)
+            .load(follower.avatarUrl)
+            .into(binding.contentDetail.imgDetail)
+        binding.contentDetail.apply {
+            tvName.text = follower.login
+            tvUsername.text = follower.name
+            tvnumfollower.text = follower.followers.toString()
+            tvnumfollowing.text = follower.following.toString()
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
     }
 }
