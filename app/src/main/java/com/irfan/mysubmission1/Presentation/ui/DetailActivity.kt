@@ -23,6 +23,7 @@ class DetailActivity : AppCompatActivity() {
     companion object {
 
         private val TAB_TILES = intArrayOf(
+            "Follower",
 
         )
 
@@ -44,11 +45,7 @@ class DetailActivity : AppCompatActivity() {
             intent.getStringExtra(KEY_TAG).toString()
         }
 
-        setSupportActionBar(binding.toolbarDetail)
-        supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-        }
-
+        supportActionBar?.hide()
 
         if (_username != "") {
             // Load My Data Followers
@@ -69,7 +66,7 @@ class DetailActivity : AppCompatActivity() {
 
         val sectionsPagerAdapter = SectionAdapter(this)
         sectionsPagerAdapter.appName = resources.getString(R.string.app_name)
-        val viewPager: ViewPager2 = findViewById(R.id.view_pager)
+        val viewPager: ViewPager2 = findViewById(R.id.viewPager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         TabLayoutMediator(tabs, viewPager) { tab, position ->

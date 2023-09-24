@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.irfan.mysubmission1.Presentation.Adapter.FollowAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
-import com.irfan.mysubmission1.R
-import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.FragmentFollowBinding
 
 
@@ -30,6 +28,11 @@ class FollowFragment : Fragment() {
         followViewModel.isLoading.observe(viewLifecycleOwner){ loader ->
             showLoadingProcess(loader)
         }
+        followViewModel.followers.observe(viewLifecycleOwner){ follower ->
+            if (follower != null){
+                loadAllFollow(follower)
+            }
+        }
     }
 
     fun showLoadingProcess(isLoading: Boolean){
@@ -40,7 +43,7 @@ class FollowFragment : Fragment() {
         }
     }
 
-    fun loadAllFollow(follow: List<FollowResponse>){
+    fun loadAllFollow(follow: List<FollowViewModel>?){
         val followAdapter = FollowAdapter()
         followAdapter.submitList(follow)
         binding.rvFollow.adapter = followAdapter
