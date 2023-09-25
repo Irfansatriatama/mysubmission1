@@ -28,6 +28,7 @@ class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIF
 
     override fun onBindViewHolder(holder: FollowHolder, position: Int) {
         val listFollowers = getItem(position)
+
         holder.apply {
             bind(listFollowers)
             itemView.setOnClickListener {

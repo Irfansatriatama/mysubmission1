@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
 
-        private const val myUsername = "irfansatriatama"
+        private const val myUsername = "a"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

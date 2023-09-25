@@ -2,7 +2,6 @@ package com.irfan.mysubmission1.data.retrofit
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -10,7 +9,7 @@ class ApiConfig {
     companion object{
 
         private const val baseUrl = "https://api.github.com/"
-        private const val token = "token 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"
+        private const val token = "token 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"
 
         fun getApiService(): ApiService {
             val authInterceptor = Interceptor { chain ->

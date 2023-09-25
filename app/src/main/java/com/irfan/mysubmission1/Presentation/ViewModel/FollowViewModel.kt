@@ -31,10 +31,11 @@ class FollowViewModel : ViewModel() {
     }
 
     fun getListFollow(
-        username: String = "irfansatriatama",
+        username: String = "",
         option: String = "followers",
     ) {
         _isLoading.value = true
+        Log.d(TAG, "getListFollow: called with username $username, option $option")
         val client = if (option == "followers") {
             apiService.getFollower(username)
         } else {
@@ -67,7 +68,7 @@ class FollowViewModel : ViewModel() {
         })
     }
 
-    fun getDetailFollower(username: String = "irfansatriatama") {
+    fun getDetailFollower(username: String = "a") {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getDetailDataFollower(username)
         client.enqueue(object : Callback<DetailUserResponse> {
@@ -93,7 +94,7 @@ class FollowViewModel : ViewModel() {
         })
     }
 
-    fun getResultBySearchUsername(username: String = "") {
+    fun getResultBySearchUsername(username: String = "a") {
         _isLoading.value = true
         val client = ApiConfig.getApiService().getFollowerByUsername(username)
         client.enqueue(object : Callback<SearchResponse> {
