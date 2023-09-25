@@ -15,11 +15,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val followViewModel by viewModels<FollowViewModel>()
 
-    companion object {
-
-        private const val myUsername = "a"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -33,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         followViewModel.isLoading.observe(this) { loader ->
-            showLoadingProcess(loader)
+            showLoading(loader)
         }
         followViewModel.followers.observe(this) { followers ->
             if (followers != null) {
@@ -58,18 +53,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun showLoadingProcess(isLoading: Boolean){
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
+    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
 
     private fun loadAllFollowers(followers: List<FollowResponse>){
         val followersAdapter = FollowAdapter()
         followersAdapter.submitList(followers)
         binding.rvSearchUsers.adapter = followersAdapter
 
+    }
+
+    companion object {
+
+        private const val myUsername = "a"
     }
 }

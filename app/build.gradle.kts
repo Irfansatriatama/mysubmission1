@@ -37,6 +37,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    defaultConfig{
+        buildConfigField("String", "KEY", "{Your token}")
+    }
 }
 
 dependencies {

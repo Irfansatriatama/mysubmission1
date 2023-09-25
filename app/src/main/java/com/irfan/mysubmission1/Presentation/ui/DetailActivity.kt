@@ -54,7 +54,7 @@ class DetailActivity : AppCompatActivity() {
                 followViewModel.getDetailFollower(_username)
             }
             followViewModel.isLoading.observe(this) { loader ->
-                showLoadingProcess(loader)
+                showLoading(loader)
             }
 
             followViewModel.detailUsers.observe(this) { follower ->
@@ -78,13 +78,8 @@ class DetailActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
     }
 
-    private fun showLoadingProcess(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
+    private fun showLoading(state: Boolean) {
+        binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
 
     private fun loadDetailDataUser(user: DetailUserResponse) {
         Glide.with(this)

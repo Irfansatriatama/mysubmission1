@@ -18,9 +18,6 @@ class FollowFragment : Fragment() {
     private lateinit var binding: FragmentFollowBinding
     private val followViewModel by viewModels<FollowViewModel>()
 
-    companion object {
-        const val ARG_POSITION = "section_number"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,7 +25,7 @@ class FollowFragment : Fragment() {
     ): View? {
         binding = FragmentFollowBinding.inflate(layoutInflater)
         followViewModel.isLoading.observe(viewLifecycleOwner){ loader ->
-            showLoadingProcess(loader)
+            showLoading(loader)
         }
         followViewModel.followers.observe(viewLifecycleOwner){ follow ->
             if (follow != null){
@@ -68,17 +65,15 @@ class FollowFragment : Fragment() {
 
     }
 
-    fun showLoadingProcess(isLoading: Boolean){
-        if (isLoading){
-            binding.progressBar.visibility = View.VISIBLE
-        }else {
-            binding.progressBar.visibility = View.GONE
-        }
-    }
+    private fun showLoading(state: Boolean) { binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
 
     fun loadAllFollow(follow: List<FollowResponse>?){
         val followAdapter = FollowAdapter()
         followAdapter.submitList(follow)
         binding.rvFollow.adapter = followAdapter
+    }
+
+    companion object {
+        const val ARG_POSITION = "section_number"
     }
 }
