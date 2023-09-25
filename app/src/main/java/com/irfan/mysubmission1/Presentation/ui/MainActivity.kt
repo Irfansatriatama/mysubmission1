@@ -7,17 +7,16 @@ import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.irfan.mysubmission1.Presentation.Adapter.FollowAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
-import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val followViewModel by viewModels<FollowViewModel> ()
-    //buat viewModel
+    private val followViewModel by viewModels<FollowViewModel>()
 
     companion object {
+
         private const val myUsername = "irfansatriatama"
     }
 
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
         if (followViewModel.followers.value == null && followViewModel.followings.value == null){
             followViewModel.getDetailFollower(myUsername)
-            followViewModel.getListFollowerOrFollowingResponse(myUsername)
+            followViewModel.getListFollow(myUsername)
         }
 
         followViewModel.isLoading.observe(this) { loader ->
@@ -70,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadAllFollowers(followers: List<FollowResponse>){
         val followersAdapter = FollowAdapter()
         followersAdapter.submitList(followers)
-        binding.contentList.rvMyFollowers.adapter = followersAdapter
+        binding.contentList.rvFollow.adapter = followersAdapter
 
     }
 }
