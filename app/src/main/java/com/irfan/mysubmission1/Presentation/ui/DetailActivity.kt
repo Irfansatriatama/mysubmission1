@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.data.response.DetailUserResponse
@@ -24,6 +25,7 @@ class DetailActivity : AppCompatActivity() {
 
         private val TAB_TILES = intArrayOf(
             "Follower",
+            "Following"
 
         )
 
@@ -49,14 +51,14 @@ class DetailActivity : AppCompatActivity() {
 
         if (_username != "") {
             // Load My Data Followers
-            if (followViewModel.detailFollow.value == null) {
-                followViewModel.getDetailFollow(_username)
+            if (followViewModel.detailUsers.value == null) {
+                followViewModel.getDetailFollower(_username)
             }
             followViewModel.isLoading.observe(this) { loader ->
                 showLoadingProcess(loader)
             }
 
-            followViewModel.detailFollower.observe(this) { follower ->
+            followViewModel.detailUsers.observe(this) { follower ->
                 if (follower != null) {
                     loadDetailDataFollower(follower)
                 }

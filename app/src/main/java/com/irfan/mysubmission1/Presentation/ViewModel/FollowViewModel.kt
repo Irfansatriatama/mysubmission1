@@ -30,8 +30,8 @@ class FollowViewModel : ViewModel() {
         private val apiService = ApiConfig.getApiService()
     }
 
-    fun getListFollowerOrFollowingResponse(
-        username: String = "riyanatsill",
+    fun getListFollow(
+        username: String = "irfansatriatama",
         option: String = "followers",
     ) {
         _isLoading.value = true

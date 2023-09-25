@@ -45,6 +45,29 @@ class FollowFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val index = arguments?.getInt(ARG_POSITION, 0)
+
+        if (index == 1) {
+            if (followViewModel.followers.value == null) {
+                followViewModel.getListFollow(
+                    DetailActivity.getUsername(),
+                    "followers"
+                )
+            }
+        } else {
+            if (followViewModel.followings.value == null) {
+                followViewModel.getListFollow(
+                    DetailActivity.getUsername(),
+                    "followings"
+                )
+            }
+        }
+
+
+    }
+
     fun showLoadingProcess(isLoading: Boolean){
         if (isLoading){
             binding.progressBar.visibility = View.VISIBLE
