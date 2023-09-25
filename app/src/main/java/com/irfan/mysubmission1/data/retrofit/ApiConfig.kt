@@ -9,7 +9,7 @@ class ApiConfig {
     companion object{
 
         private const val baseUrl = "https://api.github.com/"
-        private const val token = "token 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"
+        private const val token = "token {your github token}"
 
         fun getApiService(): ApiService {
             val authInterceptor = Interceptor { chain ->
