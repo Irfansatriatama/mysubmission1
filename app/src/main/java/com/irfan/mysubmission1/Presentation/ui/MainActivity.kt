@@ -42,9 +42,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         with(binding){
-            contentList.apply {
-                rvFollow.layoutManager = LinearLayoutManager(this@MainActivity)
-                searchView.setupWithSearchBar(contentList.sBarList)
+            binding.apply {
+                rvSearchUsers.layoutManager = LinearLayoutManager(this@MainActivity)
+                searchView.setupWithSearchBar(binding.searchBar)
                 searchView
                     .editText
                     .setOnEditorActionListener { _, _, _ ->
@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     private fun loadAllFollowers(followers: List<FollowResponse>){
         val followersAdapter = FollowAdapter()
         followersAdapter.submitList(followers)
-        binding.contentList.rvFollow.adapter = followersAdapter
+        binding.rvSearchUsers.adapter = followersAdapter
 
     }
 }

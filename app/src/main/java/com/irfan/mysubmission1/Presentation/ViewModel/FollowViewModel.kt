@@ -13,11 +13,11 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class FollowViewModel : ViewModel() {
-    private val _follower = MutableLiveData<List<FollowViewModel>?>()
-    val followers: LiveData<List<FollowViewModel>?> = _follower
+    private val _follower = MutableLiveData<List<FollowResponse>?>()
+    val followers: LiveData<List<FollowResponse>?> = _follower
 
-    private val _following = MutableLiveData<List<FollowViewModel>?>()
-    val followings: LiveData<List<FollowViewModel>?> = _following
+    private val _following = MutableLiveData<List<FollowResponse>?>()
+    val followings: LiveData<List<FollowResponse>?> = _following
 
     private val _detailUser = MutableLiveData<DetailUserResponse?>()
     val detailUsers: LiveData<DetailUserResponse?> = _detailUser

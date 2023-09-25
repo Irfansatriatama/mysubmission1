@@ -23,9 +23,9 @@ class DetailActivity : AppCompatActivity() {
 
     companion object {
 
-        private val TAB_TILES = intArrayOf(
-            "Follower",
-            "Following"
+        private val TAB_TITLES = intArrayOf(
+            R.string.follower,
+            R.string.following
 
         )
 
@@ -60,7 +60,7 @@ class DetailActivity : AppCompatActivity() {
 
             followViewModel.detailUsers.observe(this) { follower ->
                 if (follower != null) {
-                    loadDetailDataFollower(follower)
+                    loadDetailDataUser(follower)
                 }
             }
         }
@@ -87,15 +87,15 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadDetailDataFollower(follower: DetailUserResponse) {
+    private fun loadDetailDataUser(user: DetailUserResponse) {
         Glide.with(this)
-            .load(follower.avatarUrl)
-            .into(binding.contentDetail.imgDetail)
-        binding.contentDetail.apply {
-            tvName.text = follower.login
-            tvUsername.text = follower.name
-            tvnumfollower.text = follower.followers.toString()
-            tvnumfollowing.text = follower.following.toString()
+            .load(user.avatarUrl)
+            .into(binding.imgDetail)
+        binding.apply {
+            tvName.text = user.login
+            tvUsername.text = user.name
+            tvNumFollower.text = user.followers.toString()
+            tvNumFollowing.text = user.following.toString()
         }
     }
 

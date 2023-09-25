@@ -9,14 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.irfan.mysubmission1.Presentation.ui.DetailActivity
 import com.irfan.mysubmission1.data.response.FollowResponse
+import com.irfan.mysubmission1.databinding.ItemListBinding
 
 class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIFF_CALLBACK){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowHolder {
-        val binding = ItemFollowerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return FollowHolder(binding)
     }
 
-    class FollowHolder(private var binding: ItemFollowBinding): RecyclerView.ViewHolder(binding.root) {
+    class FollowHolder(private var binding: ItemListBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followers: FollowResponse){
             Glide.with(itemView)
                 .load(followers.avatarUrl)
