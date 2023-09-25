@@ -11,6 +11,11 @@ import com.irfan.mysubmission1.Presentation.ui.DetailActivity
 import com.irfan.mysubmission1.data.response.FollowResponse
 
 class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIFF_CALLBACK){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowHolder {
+        val binding = ItemFollowerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return FollowHolder(binding)
+    }
+
     class FollowHolder(private var binding: ItemFollowBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(followers: FollowResponse){
             Glide.with(itemView)
@@ -18,11 +23,6 @@ class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIF
                 .into(binding.itemImgFollower)
             binding.itemUsername.text = followers.login
         }
-    }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FollowHolder {
-        val binding = ItemFollowerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return FollowHolder(binding)
     }
 
     override fun onBindViewHolder(holder: FollowHolder, position: Int) {
@@ -35,6 +35,7 @@ class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIF
                 itemView.context.startActivity(intentToDetail)
             }
         }
+    }
 
     companion object {
         val DIFF_CALLBACK = object : DiffUtil.ItemCallback<FollowResponse>() {
