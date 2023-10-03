@@ -3,11 +3,13 @@ package com.irfan.mysubmission1.Presentation.Adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.irfan.mysubmission1.Presentation.ui.DetailActivity
+import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ItemListBinding
 
@@ -28,6 +30,8 @@ class FollowAdapter: ListAdapter<FollowResponse, FollowAdapter.FollowHolder>(DIF
 
     override fun onBindViewHolder(holder: FollowHolder, position: Int) {
         val listFollowers = getItem(position)
+
+        holder.itemView.startAnimation(AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.slide_in))
 
         holder.apply {
             bind(listFollowers)

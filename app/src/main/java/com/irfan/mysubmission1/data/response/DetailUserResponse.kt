@@ -18,4 +18,10 @@ data class DetailUserResponse(
 
 	@field:SerializedName("followers_url")
 	val followersUrl: String,
+
+	@field:SerializedName("followers")
+	val followers: Int,
+
+	@field:SerializedName("following")
+	val following: Int,
 )

@@ -12,7 +12,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
+import com.irfan.mysubmission1.changeIconColor
 import com.irfan.mysubmission1.data.response.DetailUserResponse
+import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {

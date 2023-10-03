@@ -1,12 +1,15 @@
 package com.irfan.mysubmission1.Presentation.ui
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.irfan.mysubmission1.Presentation.Adapter.FollowAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
+import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityMainBinding
 
@@ -20,6 +23,29 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.ibFavorite.setOnClickListener {
+            val intent = Intent(this@MainActivity, FavoriteActivity::class.java)
+            startActivity(intent)
+        }
+
+        val ibSetting = binding.ibSetting
+
+        ibSetting.setOnClickListener {
+            val popupMenu = PopupMenu(this, ibSetting)
+            popupMenu.inflate(R.menu.theme_setting) // Inflate menu to popup menu
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.action_theme -> {
+                        val intent = Intent(this, ThemeActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+        }
 
 
         if (followViewModel.followers.value == null && followViewModel.followings.value == null){

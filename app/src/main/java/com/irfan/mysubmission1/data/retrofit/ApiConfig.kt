@@ -2,6 +2,7 @@ package com.irfan.mysubmission1.data.retrofit
 
 import android.content.Context
 import com.irfan.mysubmission1.R
+import com.irfan.mysubmission1.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -12,13 +13,12 @@ class ApiConfig {
 
         private const val baseUrl = "https://api.github.com/"
 
-        fun getApiService(context: Context): ApiService {
-            val token = context.resources.getString(R.string.github_api_token)
+        fun getApiService(): ApiService {
 
             val authInterceptor = Interceptor { chain ->
                 val req = chain.request()
                 val requestHeaders = req.newBuilder()
-                    .addHeader("Authorization", "token $token")
+                    .addHeader("Authorization", "token " + BuildConfig.KEY)
                     .build()
                 chain.proceed(requestHeaders)
             }
