@@ -1,14 +1,23 @@
 package com.irfan.mysubmission1.Presentation.ViewModel
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.irfan.mysubmission1.data.db.DatabaseModule
+import com.irfan.mysubmission1.data.db.FavoriteData
+import com.irfan.mysubmission1.data.repository.FavoriteRepository
 
-class FavoriteViewModel(private val dbModule: DatabaseModule) : ViewModel() {
+class FavoriteViewModel(application: Application) : ViewModel() {
+    private val mNoteRepository: FavoriteRepository = FavoriteRepository(application)
+    fun insert(favoriteData: FavoriteData) {
+        mNoteRepository.insert(favoriteData)
+    }
+    fun update(favoriteData: FavoriteData) {
+        mNoteRepository.update(favoriteData)
+    }
+    fun delete(favoriteData: FavoriteData) {
+        mNoteRepository.delete(favoriteData)
+    }
 
-    fun getUserFavorite() = dbModule.userDAO.loadAll()
-
-    class Factory(private val db: DatabaseModule) : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = FavoriteViewModel(db) as T
+    fun loadAll(favoriteData: FavoriteData){
+        mNoteRepository.loadAll()
     }
 }

@@ -12,4 +12,6 @@
     <!-- Custom Color-->
     <color name="lavender_grey">#EEE8F4</color>
     <color name="soft_lavender">#DEBCFF</color>
+    <color name="blue1">#339CFF</color>
+    <color name="orange1">#FF7E33</color>
 </resources>

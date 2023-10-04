@@ -13,6 +13,8 @@ import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.changeIconColor
+import com.irfan.mysubmission1.data.db.FavoriteDao
+import com.irfan.mysubmission1.data.db.FavoriteData
 import com.irfan.mysubmission1.data.response.DetailUserResponse
 import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityDetailBinding
@@ -78,6 +80,7 @@ class DetailActivity : AppCompatActivity() {
             }
         }.attach()
         supportActionBar?.elevation = 0f
+
     }
 
     private fun showLoading(state: Boolean) {
@@ -98,5 +101,25 @@ class DetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    private fun setupFavoriteButton(item: FavoriteData.Item?) {
+        binding.btnLike.setOnClickListener {
+            item?.let {
+                viewModel.setFavorite(item)
+            }
+        }
+
+        viewModel.resultSuksesFavorite.observe(this) {
+            binding.btnLike.changeIconColor(R.color.red)
+        }
+
+        viewModel.resultDeleteFavorite.observe(this) {
+            binding.btnLike.changeIconColor(R.color.white)
+        }
+
+        viewModel.findFavorite(item?.id ?: 0) {
+            binding.btnLike.changeIconColor(R.color.red)
+        }
     }
 }
