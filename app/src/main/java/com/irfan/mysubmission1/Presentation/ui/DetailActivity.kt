@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
+import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModel
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.changeIconColor
@@ -23,7 +25,7 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val followViewModel by viewModels<FollowViewModel>()
-
+    private val favoriteViewModel by viewModels<FavoriteViewModel>()
     companion object {
 
         private val TAB_TITLES = intArrayOf(
@@ -104,22 +106,22 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupFavoriteButton(item: FavoriteData.Item?) {
-        binding.btnLike.setOnClickListener {
+        binding.btnFav.setOnClickListener {
             item?.let {
-                viewModel.setFavorite(item)
+                favoriteViewModel.setFavorite(item)
             }
         }
 
-        viewModel.resultSuksesFavorite.observe(this) {
-            binding.btnLike.changeIconColor(R.color.red)
+        favoriteViewModel.succesResult.observe(this) {
+            binding.btnFav.changeIconColor(R.color.red)
         }
 
-        viewModel.resultDeleteFavorite.observe(this) {
-            binding.btnLike.changeIconColor(R.color.white)
+        favoriteViewModel.deleteResult.observe(this) {
+            binding.btnFav.changeIconColor(R.color.white)
         }
 
-        viewModel.findFavorite(item?.id ?: 0) {
-            binding.btnLike.changeIconColor(R.color.red)
+        favoriteViewModel.findFavorite(item?.id ?: 0) {
+            binding.btnFav.changeIconColor(R.color.red)
         }
     }
 }

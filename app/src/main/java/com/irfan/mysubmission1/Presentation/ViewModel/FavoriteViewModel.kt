@@ -1,12 +1,29 @@
 package com.irfan.mysubmission1.Presentation.ViewModel
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.irfan.mysubmission1.data.db.FavoriteDao
 import com.irfan.mysubmission1.data.db.FavoriteData
+import com.irfan.mysubmission1.data.db.FavoriteDatabase
 import com.irfan.mysubmission1.data.repository.FavoriteRepository
+import kotlinx.coroutines.launch
 
-class FavoriteViewModel(application: Application) : ViewModel() {
-    private val mNoteRepository: FavoriteRepository = FavoriteRepository(application)
+class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
+    private val mNoteRepository: FavoriteRepository = FavoriteRepository(Application())
+
+    val succesResult = MutableLiveData<Boolean>()
+    val deleteResult = MutableLiveData<Boolean>()
+
+    private var isFavorite = false
+
+    fun setFavorite(item: FavoriteData.Item?) {
+    }
+
+    fun findFavorite(id: Int, listenFavorite: () -> Unit) {
+    }
     fun insert(favoriteData: FavoriteData) {
         mNoteRepository.insert(favoriteData)
     }
@@ -19,5 +36,9 @@ class FavoriteViewModel(application: Application) : ViewModel() {
 
     fun loadAll(favoriteData: FavoriteData){
         mNoteRepository.loadAll()
+    }
+
+    class Factory(private val db: FavoriteDatabase) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = FavoriteViewModel(db) as T
     }
 }
