@@ -18,7 +18,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "KEY", "\" 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 \"")
+        buildConfigField("String", "KEY", "\" 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 \"")
     }
 
     buildTypes {

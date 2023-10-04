@@ -6,17 +6,20 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
 import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModel
+import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModelFactory
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
 import com.irfan.mysubmission1.changeIconColor
 import com.irfan.mysubmission1.data.db.FavoriteDao
 import com.irfan.mysubmission1.data.db.FavoriteData
+import com.irfan.mysubmission1.data.db.FavoriteDatabase
 import com.irfan.mysubmission1.data.response.DetailUserResponse
 import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityDetailBinding
@@ -25,26 +28,34 @@ class DetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDetailBinding
     private val followViewModel by viewModels<FollowViewModel>()
-    private val favoriteViewModel by viewModels<FavoriteViewModel>()
+    // Gak kek gini : itu view model kamu ada parameter private val favoriteViewModel by viewModels<FavoriteViewModel>()
+    private lateinit var currentUser : DetailUserResponse
+
+    private lateinit var favoriteFactory : FavoriteViewModelFactory
+    private lateinit var favoriteViewModel : FavoriteViewModel
     companion object {
 
         private val TAB_TITLES = intArrayOf(
             R.string.follower,
             R.string.following
-
         )
 
         const val KEY_TAG ="USERNAME"
         private var _username = ""
         fun getUsername() = _username
 
+
+    }
+    private fun setupFavorite() {
+        favoriteFactory = FavoriteViewModelFactory(FavoriteDatabase.getDatabase(this))
+        favoriteViewModel = ViewModelProvider(this, favoriteFactory).get(FavoriteViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        setupFavorite()
         _username = if (Build.VERSION.SDK_INT >= 33) {
             intent.getStringExtra(KEY_TAG).toString()
         } else {
@@ -70,6 +81,11 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnFav.setOnClickListener {
+            val user = FavoriteData(0, currentUser.avatarUrl, currentUser.login)
+            // val isFavorited : Boolean = favoriteViewModel.findFavoriteByUsername(user.login) != null
+            favoriteViewModel.setFavorite(user)
+        }
 
         val sectionsPagerAdapter = SectionAdapter(this)
         sectionsPagerAdapter.appName = resources.getString(R.string.app_name)
@@ -82,13 +98,13 @@ class DetailActivity : AppCompatActivity() {
             }
         }.attach()
         supportActionBar?.elevation = 0f
-
     }
 
     private fun showLoading(state: Boolean) {
         binding.progressBar.visibility = if (state) View.VISIBLE else View.GONE }
 
     private fun loadDetailDataUser(user: DetailUserResponse) {
+        currentUser = user
         Glide.with(this)
             .load(user.avatarUrl)
             .into(binding.imgDetail)
@@ -105,23 +121,5 @@ class DetailActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun setupFavoriteButton(item: FavoriteData.Item?) {
-        binding.btnFav.setOnClickListener {
-            item?.let {
-                favoriteViewModel.setFavorite(item)
-            }
-        }
 
-        favoriteViewModel.succesResult.observe(this) {
-            binding.btnFav.changeIconColor(R.color.red)
-        }
-
-        favoriteViewModel.deleteResult.observe(this) {
-            binding.btnFav.changeIconColor(R.color.white)
-        }
-
-        favoriteViewModel.findFavorite(item?.id ?: 0) {
-            binding.btnFav.changeIconColor(R.color.red)
-        }
-    }
 }

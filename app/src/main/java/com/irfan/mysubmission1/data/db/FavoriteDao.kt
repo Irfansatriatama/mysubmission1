@@ -20,6 +20,8 @@ interface FavoriteDao {
     @Query("SELECT * FROM favorite WHERE id LIKE :id    LIMIT 1")
     fun findById(id: Int): FavoriteData
 
+    @Query("SELECT * FROM favorite WHERE login = :username LIMIT 1")
+    fun findByUsername(username: String) : FavoriteData
     @Update
     fun update(favorite: FavoriteData)
 

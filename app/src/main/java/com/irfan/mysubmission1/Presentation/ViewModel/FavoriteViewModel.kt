@@ -19,10 +19,15 @@ class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
 
     private var isFavorite = false
 
-    fun setFavorite(item: FavoriteData.Item?) {
+    fun setFavorite(item: FavoriteData) {
+        mNoteRepository.insert(item)
     }
 
-    fun findFavorite(id: Int, listenFavorite: () -> Unit) {
+    fun findFavoriteByUsername(username : String) : FavoriteData{
+        return mNoteRepository.getFavoriteByUsername(username)
+    }
+    fun findFavorite(id: Int) {
+
     }
     fun insert(favoriteData: FavoriteData) {
         mNoteRepository.insert(favoriteData)

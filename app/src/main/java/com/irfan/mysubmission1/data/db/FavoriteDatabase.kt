@@ -13,14 +13,18 @@ abstract class FavoriteDatabase : RoomDatabase() {
         private var INSTANCE: FavoriteDatabase? = null
         @JvmStatic
         fun getDatabase(context: Context): FavoriteDatabase {
-            if (INSTANCE == null) {
-                synchronized(FavoriteDatabase::class.java) {
-                    INSTANCE = Room.databaseBuilder(context.applicationContext,
-                        FavoriteDatabase::class.java, "note_database")
+            if (INSTANCE != null) {
+                return INSTANCE as FavoriteDatabase
+            }
+            else {
+                var instance : FavoriteDatabase = synchronized(FavoriteDatabase::class.java) {
+                    Room.databaseBuilder(context.applicationContext,
+                        FavoriteDatabase::class.java, "fav_db")
                         .build()
                 }
+                INSTANCE = instance
+                return instance
             }
-            return INSTANCE as FavoriteDatabase
         }
     }
 
