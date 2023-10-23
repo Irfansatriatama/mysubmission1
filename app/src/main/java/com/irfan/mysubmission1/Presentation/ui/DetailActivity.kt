@@ -122,30 +122,22 @@ class DetailActivity : AppCompatActivity() {
         return super.onSupportNavigateUp()
     }
 
-    private fun setupFavoriteButton(isBookmarked: Boolean) {
-        val ivBookmark = binding.btnFav
+    private fun setupFavoriteButton() {
+        val btnfav = binding.btnFav
+        var isFavorite = false
 
-        if (isBookmarked) {
-            ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite))
-        } else {
-            ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite_border))
-        }
+        btnfav.setOnClickListener {
+            isFavorite = !isFavorite
 
-        var isFavorite = isBookmarked
+            val favoriteData = FavoriteData()
 
-        ivBookmark.setOnClickListener {
-            if (isFavorite) {
-                favoriteViewModel.delete()
-                isFavorite = false
-            } else {
-                favoriteViewModel.update()
-                isFavorite = true
-            }
 
             if (isFavorite) {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite))
+                favoriteViewModel.update(favoriteData)
+                btnfav.setImageDrawable(ContextCompat.getDrawable(btnfav.context, R.drawable.ic_favorite))
             } else {
-                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite_border))
+                favoriteViewModel.delete(favoriteData)
+                btnfav.setImageDrawable(ContextCompat.getDrawable(btnfav.context, R.drawable.ic_favorite_border))
             }
         }
     }

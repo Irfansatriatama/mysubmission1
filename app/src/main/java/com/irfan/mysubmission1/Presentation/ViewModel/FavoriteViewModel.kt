@@ -10,26 +10,24 @@ import com.irfan.mysubmission1.data.db.FavoriteDatabase
 import com.irfan.mysubmission1.data.repository.FavoriteRepository
 import kotlinx.coroutines.launch
 
-class FavoriteViewModel(application: Application) : ViewModel() {
-    private val mFavoriteRepository: FavoriteRepository
+class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
+    private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(db.favoriteDao())
+
     val successResult = MutableLiveData<Boolean>()
     val deleteResult = MutableLiveData<Boolean>()
 
-    init {
-        val db = FavoriteDatabase.getDatabase(application)
-        mFavoriteRepository = FavoriteRepository(db)
-    }
+    private var isFavorite = false
 
     fun setFavorite(item: FavoriteData) {
         viewModelScope.launch {
-            val existingItem = mFavoriteRepository.findFavorite(item.id)
+            val existingItem = mFavoriteRepository.loadAll()
 
             if (existingItem != null) {
                 mFavoriteRepository.delete(existingItem)
-                successResult.postValue(false) // Item dihapus
+                successResult.postValue(false)
             } else {
                 mFavoriteRepository.insert(item)
-                successResult.postValue(true) // Item ditambahkan
+                successResult.postValue(true)
             }
         }
     }
@@ -39,11 +37,17 @@ class FavoriteViewModel(application: Application) : ViewModel() {
     }
 
     fun update(favoriteData: FavoriteData) {
-        mFavoriteRepository.update(favoriteData)
+        viewModelScope.launch {
+            mFavoriteRepository.update(favoriteData)
+            successResult.postValue(true) // Update berhasil
+        }
     }
 
     fun delete(favoriteData: FavoriteData) {
-        mFavoriteRepository.delete(favoriteData)
+        viewModelScope.launch {
+            mFavoriteRepository.delete(favoriteData)
+            successResult.postValue(true) // Hapus berhasil
+        }
     }
 
     fun loadAll(favoriteData: FavoriteData) {
