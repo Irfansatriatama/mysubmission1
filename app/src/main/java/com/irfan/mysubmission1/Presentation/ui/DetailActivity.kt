@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
@@ -98,6 +99,8 @@ class DetailActivity : AppCompatActivity() {
             }
         }.attach()
         supportActionBar?.elevation = 0f
+
+        setupFavoriteButton()
     }
 
     private fun showLoading(state: Boolean) {
@@ -119,6 +122,37 @@ class DetailActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    private fun setupFavoriteButton(isBookmarked: Boolean) {
+        val ivBookmark = binding.btnFav
+
+        if (isBookmarked) {
+            ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite))
+        } else {
+            ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite_border))
+        }
+
+        var isFavorite = isBookmarked
+
+        ivBookmark.setOnClickListener {
+            if (isFavorite) {
+                // Item sudah difavoritkan
+                favoriteViewModel.delete()
+                isFavorite = false
+            } else {
+                // Item belum difavoritkan
+                favoriteViewModel.insert()
+                isFavorite = true
+            }
+
+            // Set ulang ikon favorit berdasarkan status saat ini
+            if (isFavorite) {
+                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite))
+            } else {
+                ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite_border))
+            }
+        }
     }
 
 

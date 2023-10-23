@@ -5,45 +5,54 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.irfan.mysubmission1.data.db.FavoriteDao
 import com.irfan.mysubmission1.data.db.FavoriteData
 import com.irfan.mysubmission1.data.db.FavoriteDatabase
 import com.irfan.mysubmission1.data.repository.FavoriteRepository
 import kotlinx.coroutines.launch
 
-class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
-    private val mNoteRepository: FavoriteRepository = FavoriteRepository(Application())
-
-    val succesResult = MutableLiveData<Boolean>()
+class FavoriteViewModel(application: Application) : ViewModel() {
+    private val mFavoriteRepository: FavoriteRepository
+    val successResult = MutableLiveData<Boolean>()
     val deleteResult = MutableLiveData<Boolean>()
 
-    private var isFavorite = false
+    init {
+        val db = FavoriteDatabase.getDatabase(application)
+        mFavoriteRepository = FavoriteRepository(db)
+    }
 
     fun setFavorite(item: FavoriteData) {
-        mNoteRepository.insert(item)
+        viewModelScope.launch {
+            val existingItem = mFavoriteRepository.findFavorite(item.id)
+
+            if (existingItem != null) {
+                mFavoriteRepository.delete(existingItem)
+                successResult.postValue(false) // Item dihapus
+            } else {
+                mFavoriteRepository.insert(item)
+                successResult.postValue(true) // Item ditambahkan
+            }
+        }
     }
 
-    fun findFavoriteByUsername(username : String) : FavoriteData{
-        return mNoteRepository.getFavoriteByUsername(username)
+    fun findFavorite(id: Int): FavoriteData? {
+        return mFavoriteRepository.findFavoriteById(id)
     }
-    fun findFavorite(id: Int) {
 
-    }
-    fun insert(favoriteData: FavoriteData) {
-        mNoteRepository.insert(favoriteData)
-    }
     fun update(favoriteData: FavoriteData) {
-        mNoteRepository.update(favoriteData)
+        mFavoriteRepository.update(favoriteData)
     }
+
     fun delete(favoriteData: FavoriteData) {
-        mNoteRepository.delete(favoriteData)
+        mFavoriteRepository.delete(favoriteData)
     }
 
-    fun loadAll(favoriteData: FavoriteData){
-        mNoteRepository.loadAll()
+    fun loadAll(favoriteData: FavoriteData) {
+        mFavoriteRepository.loadAll()
     }
 
-    class Factory(private val db: FavoriteDatabase) : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = FavoriteViewModel(db) as T
+    class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return FavoriteViewModel(application) as T
+        }
     }
 }
