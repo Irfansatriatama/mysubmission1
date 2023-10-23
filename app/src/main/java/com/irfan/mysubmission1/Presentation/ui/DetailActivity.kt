@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
@@ -17,7 +16,6 @@ import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModel
 import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModelFactory
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
-import com.irfan.mysubmission1.changeIconColor
 import com.irfan.mysubmission1.data.db.FavoriteDao
 import com.irfan.mysubmission1.data.db.FavoriteData
 import com.irfan.mysubmission1.data.db.FavoriteDatabase
@@ -137,16 +135,13 @@ class DetailActivity : AppCompatActivity() {
 
         ivBookmark.setOnClickListener {
             if (isFavorite) {
-                // Item sudah difavoritkan
                 favoriteViewModel.delete()
                 isFavorite = false
             } else {
-                // Item belum difavoritkan
-                favoriteViewModel.insert()
+                favoriteViewModel.update()
                 isFavorite = true
             }
 
-            // Set ulang ikon favorit berdasarkan status saat ini
             if (isFavorite) {
                 ivBookmark.setImageDrawable(ContextCompat.getDrawable(ivBookmark.context, R.drawable.ic_favorite))
             } else {
