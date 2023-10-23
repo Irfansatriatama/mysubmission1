@@ -3,7 +3,6 @@ package com.irfan.mysubmission1.data.db
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.irfan.mysubmission1.Presentation.ui.DetailActivity
 
 @Database(entities = [FavoriteData::class], version = 1)
 abstract class FavoriteDatabase : RoomDatabase() {
@@ -12,7 +11,7 @@ abstract class FavoriteDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: FavoriteDatabase? = null
         @JvmStatic
-        fun getDatabase(context: DetailActivity): FavoriteDatabase {
+        fun getDatabase(context: FavoriteDao): FavoriteDatabase {
             if (INSTANCE != null) {
                 return INSTANCE as FavoriteDatabase
             }

@@ -4,8 +4,6 @@ import FavoriteViewModel
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModel
 import com.irfan.mysubmission1.databinding.ActivityFavoriteBinding
 
 class FavoriteActivity : AppCompatActivity() {
