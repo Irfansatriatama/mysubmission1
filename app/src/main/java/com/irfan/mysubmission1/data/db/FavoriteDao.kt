@@ -27,4 +27,6 @@ interface FavoriteDao {
 
     @Delete
     fun delete(favorite: FavoriteData)
+    @Query("SELECT * FROM favorite WHERE login = :favoriteId LIMIT 1 ")
+    fun findFavoriteById(favoriteId: Int): FavoriteData?
 }

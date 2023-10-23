@@ -1,5 +1,6 @@
 package com.irfan.mysubmission1.Presentation.ui
 
+import FavoriteViewModel
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,15 +13,12 @@ import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.irfan.mysubmission1.Presentation.Adapter.SectionAdapter
-import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModel
 import com.irfan.mysubmission1.Presentation.ViewModel.FavoriteViewModelFactory
 import com.irfan.mysubmission1.Presentation.ViewModel.FollowViewModel
 import com.irfan.mysubmission1.R
-import com.irfan.mysubmission1.data.db.FavoriteDao
 import com.irfan.mysubmission1.data.db.FavoriteData
 import com.irfan.mysubmission1.data.db.FavoriteDatabase
 import com.irfan.mysubmission1.data.response.DetailUserResponse
-import com.irfan.mysubmission1.data.response.FollowResponse
 import com.irfan.mysubmission1.databinding.ActivityDetailBinding
 
 class DetailActivity : AppCompatActivity() {
@@ -129,8 +127,7 @@ class DetailActivity : AppCompatActivity() {
         btnfav.setOnClickListener {
             isFavorite = !isFavorite
 
-            val favoriteData = FavoriteData()
-
+            val favoriteData = FavoriteData(id = 0, avatar_url = currentUser.avatarUrl, login = currentUser.login)
 
             if (isFavorite) {
                 favoriteViewModel.update(favoriteData)
@@ -141,6 +138,11 @@ class DetailActivity : AppCompatActivity() {
             }
         }
     }
+
+
+
+
+
 
 
 }

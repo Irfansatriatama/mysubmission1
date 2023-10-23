@@ -1,9 +1,5 @@
-package com.irfan.mysubmission1.Presentation.ViewModel
-
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.irfan.mysubmission1.data.db.FavoriteData
 import com.irfan.mysubmission1.data.db.FavoriteDatabase
@@ -14,25 +10,22 @@ class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
     private val mFavoriteRepository: FavoriteRepository = FavoriteRepository(db.favoriteDao())
 
     val successResult = MutableLiveData<Boolean>()
-    val deleteResult = MutableLiveData<Boolean>()
-
-    private var isFavorite = false
 
     fun setFavorite(item: FavoriteData) {
         viewModelScope.launch {
-            val existingItem = mFavoriteRepository.loadAll()
+            val existingItem = mFavoriteRepository.findFavoriteById(item.id)
 
             if (existingItem != null) {
                 mFavoriteRepository.delete(existingItem)
-                successResult.postValue(false)
+                successResult.postValue(false) // Item sudah ada, hapus favorit
             } else {
                 mFavoriteRepository.insert(item)
-                successResult.postValue(true)
+                successResult.postValue(true) // Item ditambahkan ke favorit
             }
         }
     }
 
-    fun findFavorite(id: Int): FavoriteData? {
+    suspend fun findFavorite(id: Int): FavoriteData? {
         return mFavoriteRepository.findFavoriteById(id)
     }
 
@@ -50,13 +43,7 @@ class FavoriteViewModel(private val db: FavoriteDatabase) : ViewModel() {
         }
     }
 
-    fun loadAll(favoriteData: FavoriteData) {
-        mFavoriteRepository.loadAll()
-    }
-
-    class Factory(private val application: Application) : ViewModelProvider.NewInstanceFactory() {
-        override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return FavoriteViewModel(application) as T
-        }
+    fun loadAll() {
+        // Menggunakan LiveData atau callback untuk mengembalikan data ke UI jika diperlukan
     }
 }
